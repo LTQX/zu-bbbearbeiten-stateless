@@ -24,3 +24,6 @@ def get(index):
 
 def update(index):
     items[index].isCompleted = not items[index].isCompleted
+
+def add(a, b):
+    return a + b
