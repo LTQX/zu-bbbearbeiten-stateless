@@ -2,41 +2,50 @@ default_language_version:
   python: python3
 
 repos:
-- repo: local
-  hooks:
-  - id: pytest-check
-    name: pytest
-    entry: python3 -m pytest -q
-    language: system
-    pass_filenames: false
-    always_run: true
-    stages: [pre-commit]
+  # ✅ Lokaler Hook für pytest mit Flask in eigener Umgebung
+  - repo: local
+    hooks:
+      - id: pytest-check
+        name: pytest
+        language: python
+        entry: pytest -q
+        additional_dependencies:
+          - pytest==8.4.2
+          - Flask>=3.0
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]
 
-- repo: https://github.com/psf/black
-  rev: 24.8.0
-  hooks:
-  - id: black
-    args: ["--line-length=88"]
+  # ✅ Code-Formatter Black
+  - repo: https://github.com/psf/black
+    rev: 24.8.0
+    hooks:
+      - id: black
+        args: ["--line-length=88"]
 
-- repo: https://github.com/pycqa/flake8
-  rev: 7.1.1
-  hooks:
-  - id: flake8
-    additional_dependencies: ["flake8-bugbear==24.8.19"]
+  # ✅ Code-Checker Flake8
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - flake8-bugbear==24.8.19
 
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.6.0
-  hooks:
-  - id: end-of-file-fixer
-  - id: trailing-whitespace
-  - id: check-merge-conflict
-  - id: mixed-line-ending
+  # ✅ Standard-Hooks für Whitespace, Merge-Konflikte usw.
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+      - id: mixed-line-ending
 
-- repo: local
-  hooks:
-  - id: commit-msg-policy
-    name: commit message policy
-    language: python
-    entry: python3 .git_hooks/commit-msg-policy.py
-    stages: [commit-msg]
-    pass_filenames: true
+  # ✅ Commit-Message-Policy (bleibt wie bisher)
+  - repo: local
+    hooks:
+      - id: commit-msg-policy
+        name: commit message policy
+        language: python
+        entry: python3 .git_hooks/commit-msg-policy.py
+        stages: [commit-msg]
+        pass_filenames: true
